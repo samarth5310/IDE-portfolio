@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Default: Dark Theme (VS Code Modern) */
+  :root,
+  [data-theme="dark"] {
+    --ide-bg: #181818;
+    --ide-sidebar: #1f1f1f;
+    --ide-activity: #181818;
+    --ide-editor: #1e1e1e;
+    --ide-tab-active: #1e1e1e;
+    --ide-tab-inactive: #181818;
+    --ide-tab-hover: #222222;
+    --ide-border: #2b2b2b;
+    --ide-border-light: #383838;
+    --ide-status: #007acc;
+    --ide-accent: #007acc;
+    --ide-accent-hover: #0098ff;
+    --ide-terminal: #141414;
+    --ide-panel: #181818;
+    --ide-selection: #264f78;
+    --ide-text: #cccccc;
+    --ide-muted: #858585;
+    
+    /* Syntax Highlighting */
+    --ide-keyword: #569cd6;
+    --ide-string: #ce9178;
+    --ide-function: #dcdcaa;
+    --ide-comment: #6a9955;
+    --ide-number: #b5cea8;
+    --ide-variable: #9cdcfe;
+  }
+
+  /* Midnight Cyber Theme */
+  [data-theme="midnight"] {
+    --ide-bg: #0b101b;
+    --ide-sidebar: #0f172a;
+    --ide-activity: #0b101b;
+    --ide-editor: #0d1527;
+    --ide-tab-active: #0d1527;
+    --ide-tab-inactive: #0b101b;
+    --ide-tab-hover: #131e36;
+    --ide-border: #1e293b;
+    --ide-border-light: #334155;
+    --ide-status: #0284c7;
+    --ide-accent: #38bdf8;
+    --ide-accent-hover: #7dd3fc;
+    --ide-terminal: #070b14;
+    --ide-panel: #0b101b;
+    --ide-selection: #1e3a8a;
+    --ide-text: #e2e8f0;
+    --ide-muted: #94a3b8;
+    
+    --ide-keyword: #38bdf8;
+    --ide-string: #34d399;
+    --ide-function: #fcd34d;
+    --ide-comment: #64748b;
+    --ide-number: #f472b6;
+    --ide-variable: #a5f3fc;
+  }
+
+  /* Monokai Theme */
+  [data-theme="monokai"] {
+    --ide-bg: #272822;
+    --ide-sidebar: #1e1f1c;
+    --ide-activity: #191917;
+    --ide-editor: #272822;
+    --ide-tab-active: #272822;
+    --ide-tab-inactive: #1e1f1c;
+    --ide-tab-hover: #34352d;
+    --ide-border: #3e3d32;
+    --ide-border-light: #49483e;
+    --ide-status: #75715e;
+    --ide-accent: #a6e22e;
+    --ide-accent-hover: #b8ea4c;
+    --ide-terminal: #1a1a17;
+    --ide-panel: #20211d;
+    --ide-selection: #49483e;
+    --ide-text: #f8f8f2;
+    --ide-muted: #75715e;
+    
+    --ide-keyword: #f92672;
+    --ide-string: #e6db74;
+    --ide-function: #a6e22e;
+    --ide-comment: #75715e;
+    --ide-number: #ae81ff;
+    --ide-variable: #66d9ef;
+  }
+
+  /* Light Theme (VS Code Light+) */
+  [data-theme="light"] {
+    --ide-bg: #f3f3f3;
+    --ide-sidebar: #f8f8f8;
+    --ide-activity: #2c2c2c;
+    --ide-editor: #ffffff;
+    --ide-tab-active: #ffffff;
+    --ide-tab-inactive: #ececec;
+    --ide-tab-hover: #e0e0e0;
+    --ide-border: #e5e5e5;
+    --ide-border-light: #d4d4d4;
+    --ide-status: #007acc;
+    --ide-accent: #007acc;
+    --ide-accent-hover: #005a9e;
+    --ide-terminal: #f8f8f8;
+    --ide-panel: #f3f3f3;
+    --ide-selection: #add6ff;
+    --ide-text: #333333;
+    --ide-muted: #717171;
+    
+    --ide-keyword: #0000ff;
+    --ide-string: #a31515;
+    --ide-function: #795e26;
+    --ide-comment: #008000;
+    --ide-number: #098658;
+    --ide-variable: #001080;
+  }
+
+  body {
+    background-color: var(--ide-bg);
+    color: var(--ide-text);
+    font-family: 'Space Grotesk', Inter, system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', 'Syne', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Custom VS Code Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(121, 121, 121, 0.25);
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(121, 121, 121, 0.45);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Selection Color */
+::selection {
+  background-color: var(--ide-selection);
+  color: inherit;
+}
+
+/* Editor animations */
+.tab-transition {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+/* Brutalist Monospace formatting */
+code, pre, .font-mono {
+  font-family: 'Space Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, Monaco, Consolas, monospace;
+  font-feature-settings: "liga" on, "calt" on;
+}

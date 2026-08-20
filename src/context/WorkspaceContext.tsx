@@ -37,15 +37,8 @@ export const WorkspaceProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     return typeof window !== 'undefined' ? window.innerWidth < 768 : false;
   });
 
-  const [openFiles, setOpenFiles] = useState<VirtualFile[]>([
-    fileMap.get('readme-md') || virtualFiles[0],
-    fileMap.get('about-md') || virtualFiles[1],
-    fileMap.get('projects-tsx') || virtualFiles[2],
-    fileMap.get('skills-json') || virtualFiles[3],
-    fileMap.get('contact-tsx') || virtualFiles[7]
-  ]);
-
-  const [activeFileId, setActiveFileIdState] = useState<string | null>('readme-md');
+  const [openFiles, setOpenFiles] = useState<VirtualFile[]>([]);
+  const [activeFileId, setActiveFileIdState] = useState<string | null>(null);
   const [activeSidebar, setActiveSidebar] = useState<ActiveSidebarTab>('explorer');
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(() => {
     return typeof window !== 'undefined' ? window.innerWidth >= 768 : true;

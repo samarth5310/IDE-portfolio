@@ -1,29 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Sparkles, Minimize2 } from 'lucide-react';
 
 interface KinematicArmProps {
   size?: number;
   className?: string;
-  isFloating?: boolean;
 }
 
 export const KinematicArm: React.FC<KinematicArmProps> = ({ 
-  size = 220, 
-  className = '',
-  isFloating = false
+  size = 260, 
+  className = ''
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [targetPos, setTargetPos] = useState({ x: 0, y: 0 });
-  const [currentEffector, setCurrentEffector] = useState({ x: 50, y: 50 });
+  const [targetPos, setTargetPos] = useState({ x: 40, y: 60 });
+  const [currentEffector, setCurrentEffector] = useState({ x: 40, y: 60 });
   const [isClawClosed, setIsClawClosed] = useState(false);
-  const [isMinimized, setIsMinimized] = useState(false);
 
-  // Link lengths
-  const L1 = 58; // Upper bone
-  const L2 = 52; // Forearm / lower bone
+  // Dynamic link lengths scaled with size
+  const L1 = size * 0.28; // Upper bone
+  const L2 = size * 0.25; // Forearm bone
   const center = size / 2;
 
-  // Track mouse coordinates globally across the IDE
+  // Track mouse coordinates globally across the window
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
@@ -40,7 +36,7 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Smooth lerp physics towards target
+  // Smooth fluid lerp physics towards target
   useEffect(() => {
     let animId: number;
 
@@ -64,9 +60,9 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
     const ty = currentEffector.y;
     let dist = Math.sqrt(tx * tx + ty * ty);
 
-    // Clamp distance within reachable envelope
-    const maxReach = L1 + L2 - 1;
-    const minReach = Math.abs(L1 - L2) + 4;
+    // Reach envelope bounds
+    const maxReach = L1 + L2 - 2;
+    const minReach = Math.abs(L1 - L2) + 5;
     dist = Math.max(minReach, Math.min(maxReach, dist));
 
     // Base angle to target
@@ -91,46 +87,17 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
 
   const { j1x, j1y, endX, endY, angle2 } = solveIK();
 
-  // Claw geometry points oriented along angle2
+  // Claw geometry orientation
   const clawAngleDeg = (angle2 * 180) / Math.PI;
-
-  if (isMinimized && isFloating) {
-    return (
-      <button
-        onClick={() => setIsMinimized(false)}
-        className="fixed bottom-10 right-4 p-2.5 rounded-full bg-ide-panel border border-ide-accent/50 text-ide-accent shadow-xl hover:scale-105 transition-transform z-30 flex items-center justify-center group"
-        title="Open Kinematic Arm Gadget"
-      >
-        <Sparkles className="w-4 h-4 animate-spin-slow" />
-      </button>
-    );
-  }
 
   return (
     <div
       ref={containerRef}
       onMouseDown={() => setIsClawClosed(true)}
       onMouseUp={() => setIsClawClosed(false)}
-      className={`relative select-none flex flex-col items-center justify-center transition-all ${
-        isFloating
-          ? 'fixed bottom-10 right-4 bg-ide-sidebar/95 backdrop-blur-md border border-ide-border rounded-2xl p-2 shadow-2xl z-30'
-          : ''
-      } ${className}`}
+      className={`relative select-none flex flex-col items-center justify-center ${className}`}
       style={{ width: size, height: size }}
     >
-      {/* Optional Floating Controls */}
-      {isFloating && (
-        <div className="absolute top-2 right-2 flex items-center space-x-1 opacity-0 hover:opacity-100 transition-opacity z-20">
-          <button
-            onClick={() => setIsMinimized(true)}
-            className="p-1 rounded bg-ide-bg hover:bg-ide-tabHover text-ide-muted hover:text-white"
-            title="Minimize"
-          >
-            <Minimize2 className="w-3 h-3" />
-          </button>
-        </div>
-      )}
-
       {/* SVG Robotic Kinematic Canvas */}
       <svg
         width={size}
@@ -139,14 +106,13 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
         className="overflow-visible cursor-grab active:cursor-grabbing"
       >
         <defs>
-          {/* Radial Glow Filter */}
-          <filter id="emerald-glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur" />
+          <filter id="emerald-glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="3.5" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
           
-          <filter id="pivot-glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="2" result="blur" />
+          <filter id="pivot-glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="2.5" result="blur" />
             <feComposite in="SourceGraphic" in2="blur" operator="over" />
           </filter>
         </defs>
@@ -157,9 +123,9 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
           cy={center}
           r={L1 + L2}
           fill="none"
-          stroke="rgba(255, 255, 255, 0.12)"
-          strokeWidth="1.2"
-          strokeDasharray="4 5"
+          stroke="rgba(255, 255, 255, 0.13)"
+          strokeWidth="1.5"
+          strokeDasharray="4 6"
         />
 
         {/* Inner Subtle Guide Ring */}
@@ -180,7 +146,7 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
           x2={j1x}
           y2={j1y}
           stroke="#f8f9fa"
-          strokeWidth="6"
+          strokeWidth={Math.max(5, size * 0.026)}
           strokeLinecap="round"
         />
 
@@ -191,7 +157,7 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
           x2={endX}
           y2={endY}
           stroke="#f8f9fa"
-          strokeWidth="5"
+          strokeWidth={Math.max(4.5, size * 0.022)}
           strokeLinecap="round"
         />
 
@@ -199,7 +165,7 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
         <circle
           cx={j1x}
           cy={j1y}
-          r="4.5"
+          r={Math.max(4.5, size * 0.022)}
           fill="#34d399"
           stroke="#064e3b"
           strokeWidth="1.5"
@@ -208,7 +174,7 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
         <circle
           cx={j1x}
           cy={j1y}
-          r="1.8"
+          r={Math.max(2, size * 0.009)}
           fill="#ffffff"
         />
 
@@ -216,70 +182,64 @@ export const KinematicArm: React.FC<KinematicArmProps> = ({
         <circle
           cx={center}
           cy={center}
-          r="13"
+          r={Math.max(13, size * 0.06)}
           fill="#181818"
           stroke="#e5e5e5"
-          strokeWidth="3.5"
+          strokeWidth={Math.max(3.5, size * 0.016)}
           filter="url(#pivot-glow)"
         />
         <circle
           cx={center}
           cy={center}
-          r="4"
+          r={Math.max(4, size * 0.02)}
           fill="#38bdf8"
         />
 
         {/* End Effector Mechanical Claw (Rotated to match angle2) */}
         <g transform={`translate(${endX}, ${endY}) rotate(${clawAngleDeg})`}>
-          {/* Base of claw */}
-          <circle cx="0" cy="0" r="3" fill="#ffffff" />
+          <circle cx="0" cy="0" r="3.5" fill="#ffffff" />
           
           {/* Left claw prong */}
           <line
             x1="0"
-            y1="-2"
-            x2={isClawClosed ? "8" : "7"}
-            y2={isClawClosed ? "-2" : "-5"}
+            y1="-2.5"
+            x2={isClawClosed ? "9" : "8"}
+            y2={isClawClosed ? "-2" : "-6"}
             stroke="#ffffff"
             strokeWidth="2.5"
             strokeLinecap="round"
           />
           <line
-            x1={isClawClosed ? "8" : "7"}
-            y1={isClawClosed ? "-2" : "-5"}
-            x2={isClawClosed ? "11" : "10"}
+            x1={isClawClosed ? "9" : "8"}
+            y1={isClawClosed ? "-2" : "-6"}
+            x2={isClawClosed ? "13" : "12"}
             y2={isClawClosed ? "-0.5" : "-2"}
             stroke="#ffffff"
-            strokeWidth="2"
+            strokeWidth="2.2"
             strokeLinecap="round"
           />
 
           {/* Right claw prong */}
           <line
             x1="0"
-            y1="2"
-            x2={isClawClosed ? "8" : "7"}
-            y2={isClawClosed ? "2" : "5"}
+            y1="2.5"
+            x2={isClawClosed ? "9" : "8"}
+            y2={isClawClosed ? "2" : "6"}
             stroke="#ffffff"
             strokeWidth="2.5"
             strokeLinecap="round"
           />
           <line
-            x1={isClawClosed ? "8" : "7"}
-            y1={isClawClosed ? "2" : "5"}
-            x2={isClawClosed ? "11" : "10"}
+            x1={isClawClosed ? "9" : "8"}
+            y1={isClawClosed ? "2" : "6"}
+            x2={isClawClosed ? "13" : "12"}
             y2={isClawClosed ? "0.5" : "2"}
             stroke="#ffffff"
-            strokeWidth="2"
+            strokeWidth="2.2"
             strokeLinecap="round"
           />
         </g>
       </svg>
-
-      {/* Subtle indicator label */}
-      <div className="text-[10px] font-mono text-ide-muted/70 tracking-widest uppercase mt-1 pointer-events-none">
-        IK•KINEMATICS
-      </div>
     </div>
   );
 };

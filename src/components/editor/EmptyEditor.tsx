@@ -6,90 +6,85 @@ export const EmptyEditor: React.FC = () => {
   const { openCommandPalette, toggleSidebar, toggleBottomPanel, openFile } = useWorkspace();
 
   return (
-    <div className="h-full w-full bg-ide-editor flex flex-col items-center justify-center p-6 text-center select-none animate-fade-in overflow-y-auto">
-      <div className="max-w-md space-y-5 flex flex-col items-center">
-        {/* Interactive Center Kinematic Arm */}
-        <div className="p-3 bg-ide-sidebar/60 border border-ide-border rounded-2xl shadow-xl flex items-center justify-center">
-          <KinematicArm size={200} isFloating={false} />
+    <div className="w-full h-full min-h-[460px] bg-ide-editor flex flex-col items-center justify-center p-4 sm:p-8 text-center select-none animate-fade-in overflow-y-auto">
+      <div className="flex flex-col items-center justify-center space-y-6 max-w-lg w-full">
+        {/* Exact Centered Circular Interactive Kinematic Arm */}
+        <div className="relative flex items-center justify-center p-3 rounded-full bg-black/50 border border-neutral-800/80 shadow-2xl">
+          <KinematicArm size={260} />
         </div>
 
-        {/* Title & Subtitle */}
-        <div className="space-y-1">
-          <h2 className="text-xl font-bold text-white font-mono">Samarth's Portfolio IDE</h2>
-          <p className="text-xs text-ide-muted font-mono">
-            Interactive 2-bone inverse kinematics engine. Move mouse to steer.
+        {/* Title & Description */}
+        <div className="space-y-1.5 text-center">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-white font-mono tracking-tight">
+            Samarth Kulkarni
+          </h1>
+          <p className="text-xs text-ide-muted font-mono max-w-sm">
+            Interactive IDE Portfolio • Computer Science Engineer
           </p>
         </div>
 
-        {/* Quick File Launch Chips */}
-        <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+        {/* Quick Launch File Badges */}
+        <div className="flex flex-wrap items-center justify-center gap-2 max-w-md">
           <button
             onClick={() => openFile('readme-md')}
-            className="px-2.5 py-1 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border text-xs text-ide-text flex items-center space-x-1.5 transition-colors font-mono"
+            className="px-3 py-1.5 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border hover:border-ide-accent text-xs text-ide-text hover:text-white flex items-center space-x-1.5 transition-all font-mono shadow-sm"
           >
+            <span className="text-blue-400 font-bold">#</span>
             <span>README.md</span>
           </button>
           <button
-            onClick={() => openFile('about-md')}
-            className="px-2.5 py-1 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border text-xs text-ide-text flex items-center space-x-1.5 transition-colors font-mono"
-          >
-            <span>about.md</span>
-          </button>
-          <button
             onClick={() => openFile('projects-tsx')}
-            className="px-2.5 py-1 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border text-xs text-ide-text flex items-center space-x-1.5 transition-colors font-mono"
+            className="px-3 py-1.5 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border hover:border-ide-accent text-xs text-ide-text hover:text-white flex items-center space-x-1.5 transition-all font-mono shadow-sm"
           >
+            <span className="text-cyan-400 font-bold">⚛</span>
             <span>projects.tsx</span>
           </button>
           <button
             onClick={() => openFile('skills-json')}
-            className="px-2.5 py-1 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border text-xs text-ide-text flex items-center space-x-1.5 transition-colors font-mono"
+            className="px-3 py-1.5 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border hover:border-ide-accent text-xs text-ide-text hover:text-white flex items-center space-x-1.5 transition-all font-mono shadow-sm"
           >
+            <span className="text-amber-400 font-bold">{'{ }'}</span>
             <span>skills.json</span>
+          </button>
+          <button
+            onClick={() => openFile('contact-tsx')}
+            className="px-3 py-1.5 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border hover:border-ide-accent text-xs text-ide-text hover:text-white flex items-center space-x-1.5 transition-all font-mono shadow-sm"
+          >
+            <span className="text-emerald-400 font-bold">✉</span>
+            <span>contact.tsx</span>
+          </button>
+          <button
+            onClick={() => openFile('resume-pdf')}
+            className="px-3 py-1.5 rounded bg-ide-panel hover:bg-ide-tabHover border border-ide-border hover:border-ide-accent text-xs text-ide-text hover:text-white flex items-center space-x-1.5 transition-all font-mono shadow-sm"
+          >
+            <span className="text-red-400 font-bold">📄</span>
+            <span>resume.pdf</span>
           </button>
         </div>
 
-        {/* Shortcuts Matrix */}
-        <div className="w-full bg-ide-panel/60 border border-ide-border rounded-lg p-3.5 space-y-2 text-xs text-left">
-          <div
+        {/* Shortcuts Helper Bar */}
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[11px] text-ide-muted font-mono pt-1">
+          <button
             onClick={() => openCommandPalette('files')}
-            className="flex items-center justify-between cursor-pointer hover:text-white transition-colors"
+            className="hover:text-white flex items-center space-x-1 transition-colors"
           >
-            <span className="text-ide-muted font-mono">Quick Open File</span>
-            <kbd className="bg-ide-bg px-2 py-0.5 rounded border border-ide-border font-mono text-[11px] text-ide-accent">
-              Ctrl + P
-            </kbd>
-          </div>
-
-          <div
-            onClick={() => openCommandPalette('commands')}
-            className="flex items-center justify-between cursor-pointer hover:text-white transition-colors"
-          >
-            <span className="text-ide-muted font-mono">Command Palette</span>
-            <kbd className="bg-ide-bg px-2 py-0.5 rounded border border-ide-border font-mono text-[11px] text-ide-accent">
-              Ctrl + Shift + P
-            </kbd>
-          </div>
-
-          <div
+            <span>Search files:</span>
+            <kbd className="bg-ide-panel px-1.5 py-0.5 rounded border border-ide-border text-ide-accent">Ctrl+P</kbd>
+          </button>
+          <button
             onClick={() => toggleBottomPanel('terminal')}
-            className="flex items-center justify-between cursor-pointer hover:text-white transition-colors"
+            className="hover:text-white flex items-center space-x-1 transition-colors"
           >
-            <span className="text-ide-muted font-mono">Toggle Terminal</span>
-            <kbd className="bg-ide-bg px-2 py-0.5 rounded border border-ide-border font-mono text-[11px] text-ide-accent">
-              Ctrl + `
-            </kbd>
-          </div>
-
-          <div
+            <span>Terminal:</span>
+            <kbd className="bg-ide-panel px-1.5 py-0.5 rounded border border-ide-border text-ide-accent">Ctrl+`</kbd>
+          </button>
+          <button
             onClick={() => toggleSidebar()}
-            className="flex items-center justify-between cursor-pointer hover:text-white transition-colors"
+            className="hover:text-white flex items-center space-x-1 transition-colors"
           >
-            <span className="text-ide-muted font-mono">Toggle Sidebar</span>
-            <kbd className="bg-ide-bg px-2 py-0.5 rounded border border-ide-border font-mono text-[11px] text-ide-accent">
-              Ctrl + B
-            </kbd>
-          </div>
+            <span>Sidebar:</span>
+            <kbd className="bg-ide-panel px-1.5 py-0.5 rounded border border-ide-border text-ide-accent">Ctrl+B</kbd>
+          </button>
         </div>
       </div>
     </div>

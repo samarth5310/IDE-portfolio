@@ -8,7 +8,6 @@ import { SkillsViewer } from './SkillsViewer';
 import { ContactViewer } from './ContactViewer';
 import { PdfViewer } from './PdfViewer';
 import { EmptyEditor } from './EmptyEditor';
-import { KinematicArm } from '../ui/KinematicArm';
 
 export const EditorArea: React.FC = () => {
   const { activeFile } = useWorkspace();
@@ -71,13 +70,10 @@ export const EditorArea: React.FC = () => {
         </div>
       )}
 
-      {/* Editor Content Area (Clean layout without side minimap lines) */}
+      {/* Editor Content Area */}
       <div className="flex-1 overflow-hidden relative">
         {renderActiveContent()}
       </div>
-
-      {/* Floating Interactive Kinematic Robotic Arm */}
-      <KinematicArm isFloating={true} size={180} />
     </main>
   );
 };

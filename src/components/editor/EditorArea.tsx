@@ -8,7 +8,7 @@ import { SkillsViewer } from './SkillsViewer';
 import { ContactViewer } from './ContactViewer';
 import { PdfViewer } from './PdfViewer';
 import { EmptyEditor } from './EmptyEditor';
-import { Minimap } from './Minimap';
+import { KinematicArm } from '../ui/KinematicArm';
 
 export const EditorArea: React.FC = () => {
   const { activeFile } = useWorkspace();
@@ -55,13 +55,13 @@ export const EditorArea: React.FC = () => {
   };
 
   return (
-    <main className="h-full w-full flex flex-col bg-ide-editor overflow-hidden select-none">
+    <main className="h-full w-full flex flex-col bg-ide-editor overflow-hidden select-none relative">
       {/* Tab bar */}
       <EditorTabs />
 
       {/* Breadcrumb path */}
       {activeFile && (
-        <div className="h-6 bg-ide-editor border-b border-ide-border/50 px-4 flex items-center text-[11px] text-ide-muted select-none shrink-0 space-x-1">
+        <div className="h-6 bg-ide-editor border-b border-ide-border/50 px-4 flex items-center text-[11px] text-ide-muted select-none shrink-0 space-x-1 font-mono">
           <span>portfolio</span>
           <ChevronRight className="w-3 h-3 text-ide-muted/60" />
           <div className="flex items-center text-ide-text">
@@ -71,16 +71,13 @@ export const EditorArea: React.FC = () => {
         </div>
       )}
 
-      {/* Editor Content + Optional Minimap */}
-      <div className="flex-1 flex overflow-hidden">
-        <div className="flex-1 overflow-hidden">
-          {renderActiveContent()}
-        </div>
-
-        {activeFile && activeFile.id !== 'resume-pdf' && (
-          <Minimap content={activeFile.content} />
-        )}
+      {/* Editor Content Area (Clean layout without side minimap lines) */}
+      <div className="flex-1 overflow-hidden relative">
+        {renderActiveContent()}
       </div>
+
+      {/* Floating Interactive Kinematic Robotic Arm */}
+      <KinematicArm isFloating={true} size={180} />
     </main>
   );
 };
